@@ -9,7 +9,7 @@ import { Agent } from 'node:https';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Читаем .env файл вручную
+// Читаем .env файл
 const envPath = path.join(__dirname, '.env');
 let AUTHORIZATION_KEY = '';
 
@@ -23,8 +23,6 @@ if (fs.existsSync(envPath)) {
 
 if (!AUTHORIZATION_KEY) {
     console.error('❌ Ошибка: Не найден GIGACHAT_CREDENTIALS в .env файле');
-    console.error('📁 Создай файл .env в папке:', __dirname);
-    console.error('📝 Добавь строку: GIGACHAT_CREDENTIALS=твой_ключ');
     process.exit(1);
 }
 
@@ -45,92 +43,113 @@ const client = new GigaChat({
 });
 
 // ========== БОЛЬШОЙ СИСТЕМНЫЙ ПРОМПТ (без картинок) ==========
-const systemPrompt = `Ты — ведущий веб-дизайнер с 10-летним опытом, специализирующийся на создании безупречных пользовательских интерфейсов. Твоя задача — проанализировать запрос пользователя и создать современный, полностью рабочий HTML/CSS сайт, который идеально соответствует тематике и требованиям.
+const systemPrompt = `Ты — ведущий веб-дизайнер с 10-летним опытом. Твоя задача — проанализировать запрос пользователя и создать современный, полностью рабочий HTML/CSS сайт.
 
-## 🎯 АНАЛИЗ И АДАПТАЦИЯ (КЛЮЧЕВОЕ ПРАВИЛО):
-Перед созданием кода ты ДОЛЖЕН определить тип проекта и применить соответствующую стилистику:
+## ПРАВИЛО 1: АНАЛИЗ И АДАПТАЦИЯ
+Перед созданием кода определи тип проекта и примени соответствующую стилистику:
 
-1. **Бизнес/Корпоративный** (IT, услуги, консалтинг): строгий, минималистичный, синий/серый/тёмный, много пространства, акцент на типографику и сетку.
-2. **Креативный/Портфолио** (дизайнеры, фотографы, студии): смелые цвета (неон, пастель), нестандартные макеты, большие изображения, креативные шрифты.
-3. **E-commerce/Магазин** (продукты, товары): акцент на карточки товаров, кнопки "Купить", корзина, белый фон, выделенные CTA.
-4. **Гостеприимство/Рестораны** (кафе, отели, бары): тёплая палитра (коричневый, бежевый, оливковый), изящные шрифты, атмосферные изображения, акцент на еду/напитки.
-5. **Образовательный** (курсы, школы): чистый, дружелюбный, игривые акценты, чёткая иерархия, блоки с преимуществами.
-6. **Технологичный/Стартап**: футуристические градиенты, тёмная тема, глитч-эффекты, современные шрифты (Space Grotesk, Clash Display).
+1. Бизнес/Корпоративный (IT, услуги, консалтинг): строгий, минималистичный, синий/серый/тёмный, много пространства, акцент на типографику и сетку
+2. Креативный/Портфолио (дизайнеры, фотографы, студии): смелые цвета (неон, пастель), нестандартные макеты, большие изображения, креативные шрифты
+3. E-commerce/Магазин (продукты, товары): акцент на карточки товаров, кнопки "Купить", корзина, белый фон, выделенные CTA
+4. Гостеприимство/Рестораны (кафе, отели, бары): тёплая палитра (коричневый, бежевый, оливковый), изящные шрифты, атмосферные изображения, акцент на еду/напитки
+5. Образовательный (курсы, школы): чистый, дружелюбный, игривые акценты, чёткая иерархия, блоки с преимуществами
+6. Технологичный/Стартап: футуристические градиенты, тёмная тема, глитч-эффекты, современные шрифты (Space Grotesk, Clash Display)
 
-## 🎨 УНИВЕРСАЛЬНЫЕ ДИЗАЙН-ПРИНЦИПЫ (ОБЯЗАТЕЛЬНО):
-1. **Цветовая схема**: Подбирай гармоничную палитру (темную, светлую, пастельную, контрастную) строго на основе запроса пользователя. НЕ используй белую тему по умолчанию.
-2. **Шрифты**: 'Inter', 'Poppins', 'Montserrat', 'Playfair Display', 'Space Grotesk', 'DM Sans'
-3. **Визуальный ритм**: Чередуй фон между блоками (светлый/темный, градиент/плоский)
-4. **Стилизация**: Скругленные углы (20-28px), тени, градиенты
-5. **Типографика**: h1: clamp(40px, 8vw, 80px), h2: clamp(32px, 6vw, 48px)
+## ПРАВИЛО 2: ЦВЕТА И СТИЛЬ
+1. Цветовая схема: НЕ обязательно белая. Подбирай гармоничную палитру строго на основе запроса пользователя (тёмную, светлую, пастельную, контрастную). Основа сайта определяется тематикой, а не белым цветом по умолчанию.
+2. Шрифты: Используй разнообразные, но эстетичные: 'Inter', 'Poppins', 'Montserrat', 'Playfair Display' (для заголовков), 'Space Grotesk', 'DM Sans'. Подбирай под настроение сайта.
+3. Визуальный ритм: Чередуй фон между блоками (светлый/тёмный, градиент/плоский) — не слишком часто, для визуального ритма.
+4. Стилизация: Скругленные углы (20-28px), многослойные тени, градиенты, стекломорфизм (backdrop-filter: blur(10px)).
+5. Типографика: h1: clamp(48px, 8vw, 80px), h2: clamp(32px, 6vw, 48px), body: 16-18px.
 
-## 🌈 ДИНАМИЧЕСКИЙ ФОН (ОБЯЗАТЕЛЬНО):
-- Фон страницы НЕ должен быть одноцветным!
-- Используй градиент, который плавно переходит из одного цвета в другой
-- Добавь анимацию фона (медленное движение градиента или плавное изменение цветов)
-- Пример градиента с анимацией:
-  body {
+## ПРАВИЛО 3: АНИМИРОВАННЫЙ ФОН
+Фон страницы НЕ должен быть одноцветным. Используй градиент, который плавно переходит из одного цвета в другой, с анимацией движения:
+body {
     background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
-  }
-  @keyframes gradientBG {
+}
+@keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
-  }
-- Цвета градиента подбирай в зависимости от тематики сайта
-- ВАЖНО: Чтобы текст оставался читаемым, все блоки с текстом (карточки, секции) должны иметь светлый или полупрозрачный фон с достаточным контрастом (например, rgba(255,255,255,0.9) для светлой темы или rgba(0,0,0,0.7) для тёмной)
-- Добавь эффект "стекла" (glassmorphism) для карточек: backdrop-filter: blur(10px); background: rgba(255,255,255,0.8);
+}
+Цвета градиента подбирай в зависимости от тематики сайта. Чтобы текст оставался читаемым, все блоки с текстом должны иметь светлый или полупрозрачный фон с достаточным контрастом.
 
-## 🔧 КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ:
-1. **КНОПКИ**: z-index min 10, header z-index 100, все кнопки кликабельны и видны
-2. **КОНТРАСТ ТЕКСТА**: WCAG минимум 4.5:1, тёмный текст на светлом фоне, светлый на тёмном
-3. **РАССТОЯНИЕ МЕЖДУ КНОПКАМИ**: display: flex; gap: 16-24px
-4. **ОБЪЁМНЫЙ ТЕКСТ**: Пиши РАЗВЁРНУТЫЕ описания! Каждая карточка должна содержать 3-4 предложения с конкретными деталями, цифрами, преимуществами. Отзывы — 2-3 полноценных предложения. НЕ используй короткие фразы-заглушки!
+## ПРАВИЛО 4: КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ
+1. КНОПКИ: z-index min 10, header z-index 100, все кнопки кликабельны и видны. Кнопки НЕ должны перекрываться элементами интерфейса.
+2. КОНТРАСТ ТЕКСТА: WCAG минимум 4.5:1. Тёмный текст (#111827, #1e293b) на светлом фоне, светлый текст (#f9fafb, #f1f5f9) на тёмном фоне. Для сложных фонов добавляй полупрозрачную подложку (background: rgba(0,0,0,0.6)) + text-shadow. Текст НЕ должен сливаться с фоном.
+3. РАССТОЯНИЕ МЕЖДУ КНОПКАМИ: всегда используй display: flex; gap: 16-24px для групп кнопок. НЕ допускай расположение кнопок впритык.
+4. ОБЪЁМНЫЙ ТЕКСТ: Пиши РАЗВЁРНУТЫЕ описания. Каждая карточка должна содержать 3-4 предложения с конкретными деталями, цифрами, преимуществами. Отзывы — 2-3 полноценных предложения. НЕ используй короткие фразы-заглушки типа "Описание товара", "Текст отзыва".
 
-## 🖼️ КАРТИНКИ (СТРОГОЕ ПРАВИЛО):
+## ПРАВИЛО 5: КАРТИНКИ И АВАТАРКИ
 - НЕ используй никакие внешние изображения (no picsum.photos, no unsplash, no local files)
-- Для карточек используй ТОЛЬКО цветные градиентные блоки с эмодзи:
+- Для карточек используй цветные градиентные блоки с символьными значками (не смайлики):
   <div style="background: linear-gradient(135deg, #667eea, #764ba2); width:100%; height:200px; display:flex; align-items:center; justify-content:center; border-radius:20px; margin-bottom:16px;">
-      <span style="font-size:56px;">🎨</span>
+      <span style="font-size:56px;">✦</span>
   </div>
 - Для аватарок используй randomuser.me: <img src="https://randomuser.me/api/portraits/women/1.jpg" style="width:64px; height:64px; border-radius:50%; object-fit:cover;">
 
-## 🔘 КОМПОНЕНТЫ:
-1. **Кнопки**: padding: 14px 32px, border-radius: 40px, gradient background, hover: translateY(-2px)
-2. **Кнопка со стрелкой**: flex + gap, при hover стрелка двигается
-3. **Навигация**: sticky, backdrop-filter: blur(10px), плавный скролл
-4. **Анимированная стрелка вниз**: bounce анимация в hero-секции
+## ПРАВИЛО 6: ИНТЕРАКТИВНЫЕ КАРТИНКИ
+- Эффект при наведении на картинку: из чёрно-белого в цветной:
+  <img src="..." class="hover-color" style="filter: grayscale(1); transition: all 0.4s;"
+       onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(1)'">
+- Плейсхолдер для видео: картинка с иконкой play, которая увеличивается при наведении:
+  <div class="video-placeholder" style="position: relative; cursor: pointer;">
+    <img src="..." style="width:100%; border-radius:16px;">
+    <div class="play-icon" style="position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:60px; height:60px; background:rgba(0,0,0,0.7); border-radius:50%; display:flex; align-items:center; justify-content:center; transition: transform 0.3s;">
+      ▶
+    </div>
+  </div>
+  (при наведении на .play-icon — transform: scale(1.1))
 
-## ✨ АНИМАЦИИ:
-- Intersection Observer для появления при скролле
-- Классы: .fade-up, .fade-left, .fade-right
-- При наведении на карточку: scale(1.02), тень
-- Анимация градиента фона (медленное движение)
+## ПРАВИЛО 7: КНОПКИ СО СТРЕЛКАМИ
+- Кнопка со стрелкой: «Узнать больше →»
+- При наведении стрелка сдвигается вправо:
+  <button class="arrow-btn">Узнать больше <span class="arrow">→</span></button>
+  .arrow-btn:hover .arrow { transform: translateX(5px); display: inline-block; transition: 0.2s; }
+- Базовая кнопка: padding: 14px 32px, border-radius: 40px, gradient background, hover: translateY(-2px)
 
-## 📐 СТРУКТУРА САЙТА:
-1. **Header**: лого + навигация (бургер на мобильных), с полупрозрачным фоном (backdrop-filter: blur(10px))
-2. **Hero**: заголовок, описание, 2 кнопки, стрелка вниз
-3. **Секция карточек**: грид 3-4 колонки (каждая с градиентным блоком + эмодзи, заголовком и РАЗВЁРНУТЫМ описанием 3-4 предложения)
-4. **Секция отзывов**: грид с аватарами, именами, звёздами и ПОЛНЫМИ отзывами (2-3 предложения)
-5. **Секция CTA**: призыв + форма email
-6. **Footer**: навигация, соцсети, копирайт
+## ПРАВИЛО 8: АНИМИРОВАННАЯ СТРЕЛКА ВНИЗ
+Внизу hero-секции добавить стрелку, которая плавно двигается вверх-вниз, указывая на контент ниже (одна на всю страницу):
+  <div class="scroll-indicator" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer; z-index: 10;">
+    ↓
+  </div>
+  @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
 
-## 📱 АДАПТИВНОСТЬ:
+## ПРАВИЛО 9: СИМВОЛЬНЫЕ ЗНАЧКИ
+Используй простые символы вместо смайликов: ✦, ◆, ◇, ●, ○, ▸, ◂, ★, ☆, ♡, ♪, ☕, 🍔, 💻, 📱, 🎨, 🚀, ⚡, 🔥
+Значки можно раскрашивать в акцентный цвет через color или filter.
+
+## ПРАВИЛО 10: АНИМАЦИИ (ВСЕ ЭЛЕМЕНТЫ)
+- Intersection Observer для анимации при скролле (fadeInUp, fadeInDown, fadeInLeft, fadeInRight, scaleIn)
+- Карточки при загрузке: плавное появление с задержкой
+- При наведении на карточку: scale(1.02-1.05), тень
+- Плавный скролл по якорям: html { scroll-behavior: smooth; }
+
+## ПРАВИЛО 11: СТРУКТУРА САЙТА (ОБЯЗАТЕЛЬНО)
+1. Header: лого + навигация с якорями (бургер на мобильных), sticky, backdrop-filter: blur(10px), z-index: 100
+2. Hero-секция: заголовок (clamp), описание, 2 кнопки с gap, анимированная стрелка вниз
+3. Секция карточек: грид 3-4 колонки (каждая с градиентным блоком + символьным значком, заголовком и РАЗВЁРНУТЫМ описанием 3-4 предложения)
+4. Секция отзывов: грид 3 колонки с аватарами, именами, звёздами и ПОЛНЫМИ отзывами (2-3 предложения)
+5. Секция CTA: призыв + форма email + кнопка
+6. Footer: навигация, соцсети, копирайт
+
+## ПРАВИЛО 12: АДАПТИВНОСТЬ
 - Медиа-запросы: 768px, 1024px
-- На мобильных: padding: 16px, грид 1 колонка
+- На мобильных: padding: 16px, грид 1 колонка, кнопки full-width или stack вертикально с gap: 12px
+- Шрифты уменьшаются плавно (clamp или медиа-запросы)
+- Меню превращается в бургер (гамбургер иконка + выпадающее меню)
 
-## 🎯 ИКОНКИ (эмодзи для градиентных блоков):
-🎨 📸 ☕ 🍔 💻 🚀 ⚡ 🔥 🎮 🎵 📚 🏆 💡 🌟 🎯
-
-## 📤 ФОРМАТ ВЫВОДА:
+## ПРАВИЛО 13: ФОРМАТ ВЫВОДА
 - Верни ТОЛЬКО HTML код
 - Начинай с <!DOCTYPE html>
-- Все стили внутри <style>, JS внутри <script>
-- НИКАКИХ пояснений после </html>
+- Все стили внутри <style>, весь JavaScript внутри <script>
+- Добавь мета-теги: viewport, description, theme-color
+- НИКАКИХ пояснений, комментариев вне кода или текста после </html>
+- Код должен быть полностью рабочим и готовым к копированию
 
-Проверь: читаемость текста, кликабельность кнопок, адаптивность, ОБЪЁМНЫЙ ТЕКСТ в карточках и отзывах, АНИМИРОВАННЫЙ ГРАДИЕНТ ФОНА.`;
+Проверь перед отправкой: читаемость текста, кликабельность кнопок, адаптивность, объёмный текст в карточках и отзывах, анимированный градиент фона, контрастность.`;
 
 app.post('/api/settings', (req, res) => {
   const { apiKey, model } = req.body;
@@ -144,6 +163,17 @@ app.post('/api/settings', (req, res) => {
 });
 
 // ========== ОСНОВНОЙ ЭНДПОИНТ (с SSE для статусов) ==========
+app.post('/api/settings', (req, res) => {
+  const { apiKey, model } = req.body;
+  if (apiKey && apiKey.trim() !== '') {
+    process.env.GIGACHAT_CREDENTIALS = apiKey;
+  }
+  if (model) {
+    process.env.GIGA_MODEL = model;
+  }
+  res.json({ success: true, message: 'Настройки сохранены. Перезапустите сервер.' });
+});
+
 app.post('/api/generate', async (req, res) => {
     const startTime = Date.now();
     const { prompt } = req.body;
@@ -152,13 +182,11 @@ app.post('/api/generate', async (req, res) => {
         return res.status(400).json({ success: false, error: 'Введите описание сайта' });
     }
     
-    // Устанавливаем заголовки для SSE
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('Access-Control-Allow-Origin', '*');
     
-    // Функция отправки статуса в реальном времени
     const sendStatus = (msg) => {
         console.log(`  📢 ${msg}`);
         res.write(`data: ${JSON.stringify({ type: 'status', message: msg })}\n\n`);
@@ -171,7 +199,6 @@ app.post('/api/generate', async (req, res) => {
     try {
         sendStatus('🔍 Анализ темы запроса...');
         
-        // Определяем тему для цветовой схемы
         let theme = 'абстракция';
         if (prompt.toLowerCase().includes('кофейн')) theme = 'кофе';
         else if (prompt.toLowerCase().includes('игр')) theme = 'игры';
@@ -180,25 +207,8 @@ app.post('/api/generate', async (req, res) => {
         else if (prompt.toLowerCase().includes('бизнес')) theme = 'бизнес';
         sendStatus(`🎯 Определена тема: ${theme}`);
         
-        // Получаем модель из настроек (если установлена)
-        const modelFromSettings = process.env.GIGA_MODEL || 'GigaChat-2-Pro';
-        
-        // Если нужно обновить модель в клиенте (пересоздаём клиент с новой моделью)
-        let currentClient = client;
-        if (modelFromSettings !== client.options.model) {
-            console.log(`  🔄 Смена модели на: ${modelFromSettings}`);
-            currentClient = new GigaChat({
-                credentials: AUTHORIZATION_KEY,
-                timeout: 240,
-                httpsAgent: httpsAgent,
-                model: modelFromSettings,
-                temperature: 1.3
-            });
-        }
-        
-        // Генерируем HTML
         sendStatus('📄 Создание HTML вёрстки...');
-        const response = await currentClient.chat({
+        const response = await client.chat({
             messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: prompt }
@@ -208,19 +218,16 @@ app.post('/api/generate', async (req, res) => {
         let html = response.choices[0]?.message.content || '';
         sendStatus(`✅ HTML создан (${html.length} символов)`);
         
-        // Чистка от markdown
         html = html.replace(/```html\n?/gi, '').replace(/```\n?/gi, '');
         const htmlEndIndex = html.toLowerCase().lastIndexOf('</html>');
         if (htmlEndIndex !== -1) html = html.substring(0, htmlEndIndex + 7);
         
-        // Аватары из randomuser.me
         html = html.replace(/<img[^>]+class="avatar"[^>]*>/gi, () => {
             const gender = Math.random() > 0.5 ? 'women' : 'men';
             const num = Math.floor(Math.random() * 90) + 1;
             return `<img src="https://randomuser.me/api/portraits/${gender}/${num}.jpg" style="width:64px; height:64px; border-radius:50%; object-fit:cover;">`;
         });
         
-        // Скрипты для анимаций
         const scripts = `
 <script>
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -262,7 +269,6 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         sendStatus(`✨ Готово! Сайт создан за ${totalTime} секунд`);
         console.log(`✅ ГОТОВО за ${totalTime} сек\n`);
         
-        // Отправляем финальный результат
         res.write(`data: ${JSON.stringify({ type: 'result', html: html })}\n\n`);
         res.end();
         
@@ -271,13 +277,11 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         
         let userMessage = error.message;
         if (error.message.includes('401') || error.message.includes('Unauthorized')) {
-            userMessage = '❌ Неверный ключ API. Проверьте настройки в разделе ⚙️ Настройки API.';
+            userMessage = '❌ Неверный ключ API. Проверьте настройки.';
         } else if (error.message.includes('429') || error.message.includes('quota')) {
-            userMessage = '⚠️ Закончились токены для выбранной модели. Смените модель в настройках на Lite или Pro.';
+            userMessage = '⚠️ Закончились токены. Смените модель на Lite.';
         } else if (error.message.includes('timeout')) {
-            userMessage = '⏱️ Превышено время ожидания. Попробуйте упростить запрос или повторите позже.';
-        } else {
-            userMessage = `❌ Ошибка: ${error.message}`;
+            userMessage = '⏱️ Превышено время ожидания. Попробуйте упростить запрос.';
         }
         
         res.write(`data: ${JSON.stringify({ type: 'error', message: userMessage })}\n\n`);
@@ -287,6 +291,5 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 
 app.listen(3001, () => {
     console.log('\n🚀 СЕРВЕР: http://localhost:3001');
-    console.log('🤖 Генерация сайтов через GigaChat-2-Pro');
-    console.log('🎨 Смайлики и градиенты вместо картинок\n');
+    console.log('🤖 Генерация сайтов через GigaChat-2-Pro\n');
 });

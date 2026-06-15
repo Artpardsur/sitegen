@@ -67,7 +67,6 @@ function App() {
               setStatusMessages(prev => [...prev, data.message]);
             } else if (data.type === 'result') {
               setHtml(data.html);
-              // Сохраняем в историю
               const newHistoryItem = {
                 id: Date.now(),
                 prompt: prompt.slice(0, 50) + (prompt.length > 50 ? '...' : ''),
@@ -123,14 +122,44 @@ export default GeneratedSite;`;
 
   return (
     <div className="app">
+      {/* ЛЕВАЯ ПАНЕЛЬ — ИСТОРИЯ */}
+      <div className="history-panel">
+        <div className="history-panel-header">
+          <h3>История</h3>
+          {history.length > 0 && (
+            <button onClick={() => {
+              setHistory([]);
+              localStorage.removeItem('designHistory');
+            }} className="clear-history-btn">Очистить</button>
+          )}
+        </div>
+        <div className="history-panel-list">
+          {history.length === 0 ? (
+            <div className="history-empty">Пока нет генераций</div>
+          ) : (
+            history.map(item => (
+              <button key={item.id} className="history-panel-item" onClick={() => {
+                setPrompt(item.fullPrompt);
+                setHtml(item.html);
+              }}>
+                <div className="history-panel-item-prompt">{item.prompt}</div>
+                <div className="history-panel-item-date">{item.date}</div>
+              </button>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* ЦЕНТРАЛЬНАЯ ПАНЕЛЬ — ЧАТ */}
       <div className="chat-panel">
         <div className="chat-header">
-          <h1>🎨 SiteGen</h1>
+          <h1>SiteGen</h1>
           <div className="subtitle">Генератор дизайна сайтов</div>
         </div>
+        
         <div className="api-settings">
           <details>
-            <summary>⚙️ Настройки API</summary>
+            <summary>Настройки API</summary>
             <div className="api-settings-content">
               <label>Ключ GigaChat:</label>
               <input 
@@ -150,13 +179,13 @@ export default GeneratedSite;`;
             </div>
           </details>
         </div>
+        
         <div className="chat-messages">
           <div className="welcome-message">
-            <p>👋 Опишите сайт, который хотите создать</p>
-            <div className="example">📝 Например: «Лендинг для кофейни в скандинавском стиле, светлая тема»</div>
+            <p>Опишите сайт, который хотите создать</p>
+            <div className="example">Например: «Лендинг для кофейни в скандинавском стиле, светлая тема»</div>
           </div>
           
-          {/* Отображение статусов генерации */}
           {statusMessages.length > 0 && (
             <div className="status-list">
               {statusMessages.map((msg, idx) => (
@@ -167,7 +196,6 @@ export default GeneratedSite;`;
             </div>
           )}
           
-          {/* Индикатор статуса генерации */}
           {loading && (
             <div className="status-container">
               <div className="status-spinner"></div>
@@ -179,42 +207,13 @@ export default GeneratedSite;`;
             <>
               <div className="success-message">✅ Сайт сгенерирован! Превью справа.</div>
               <button onClick={exportToReact} className="export-react-btn">
-                📦 Экспорт в React
+                Экспорт в React
               </button>
             </>
           )}
           {error && <div className="error-message">❌ {error}</div>}
         </div>
         
-        <div className="chat-messages">
-        </div>
-        {history.length > 0 && (
-          <div className="history-area">
-            <div className="history-header">
-              <h3>📜 История генераций</h3>
-              <button onClick={() => {
-                setHistory([]);
-                localStorage.removeItem('designHistory');
-              }} className="clear-history-btn">Очистить</button>
-            </div>
-            <div className="history-list">
-              {history.map(item => (
-                <button key={item.id} className="history-item" onClick={() => {
-                  setPrompt(item.fullPrompt);
-                  setHtml(item.html);
-                }}>
-                  {item.prompt}
-                  <span className="history-date">{item.date}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="chat-input-area">
-          {/* существующий код textarea, button */}
-        </div>
-
         <div className="chat-input-area">
           <textarea
             value={prompt}
@@ -234,9 +233,10 @@ export default GeneratedSite;`;
         </div>
       </div>
 
+      {/* ПРАВАЯ ПАНЕЛЬ — ПРЕВЬЮ */}
       <div className="preview-panel">
         <div className="preview-header">
-          <h2>📱 Превью сайта</h2>
+          <h2>Превью сайта</h2>
         </div>
         <div className="preview-content">
           {html ? (
@@ -245,13 +245,12 @@ export default GeneratedSite;`;
               title="site-preview"
               sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
               className="preview-iframe"
-              style={{ overflow: 'hidden' }}
             />
           ) : (
             <div className="empty-preview">
               <div className="empty-icon">✨</div>
               <h3>Здесь будет ваш сайт</h3>
-              <p>Опишите дизайн слева и нажмите «Создать сайт»</p>
+              <p>Опишите дизайн в центре и нажмите «Создать сайт»</p>
             </div>
           )}
         </div>
