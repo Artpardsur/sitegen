@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инженерное машиностроение</title>
+    <style>
+        /* Основной стиль */
+        * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { 
+            background: radial-gradient(circle at center, #ffccdd 0%, #bcd4ec 100%), url('bg-image.jpg') no-repeat fixed;
+            background-size: cover;
+            color: #1e293b;
+            line-height: 1.6;
+            font-size: clamp(16px, 1.5vw, 18px);
+        }
+        
+        header {
+            position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.8);
+        }
+        
+        nav ul { list-style-type: none; margin: 0; padding: 0; }
+        nav li { display: inline-block; margin-right: 24px; }
+        
+        .hero-section {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(to right, #ffebdb, #ffe5d7);
+            color: #1e293b;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #ffbdc4, #ff9fad);
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .chart-container {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        footer {
+            background: #f9fafb;
+            padding: 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#products">Продукция</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="home" class="hero-section">
+        <h1>Инженерное машиностроение</h1>
+        <p>Надежные решения для вашего бизнеса</p>
+        <div class="btn-group">
+            <button class="cta-btn">Узнать подробнее</button>
+            <button class="cta-btn">Свяжитесь с нами</button>
+        </div>
+        <div class="scroll-indicator" style="animation: bounce 2s infinite;">
+            ↓
+        </div>
+    </section>
+    
+    <section id="about">
+        <h2>О компании</h2>
+        <p>Компания занимается проектированием и производством машинного оборудования более 20 лет.</p>
+        <div class="card-container">
+            <div class="card stat-card">
+                <div><span>150+</span> проектов реализовано</div>
+                <div><span>98%</span> довольных клиентов</div>
+                <div><span>12</span> патентов получено</div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="products">
+        <h2>Продукция</h2>
+        <div class="card-container">
+            <div class="card">
+                <div style="background: linear-gradient(135deg, #ffbdc4, #ff9fad);">
+                    <span>Машины-автоматы</span>
+                    <p>Автоматизация производственных процессов повышает эффективность работы предприятия.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div style="background: linear-gradient(135deg, #ffdada, #ffa6a6);">
+                    <span>Компактные станки</span>
+                    <p>Станки с высокой точностью обработки деталей.</p>
+                </div>
+            </div>
+            <!-- Добавьте еще две карточки -->
+        </div>
+    </section>
+    
+    <section id="services">
+        <h2>Наши услуги</h2>
+        <div class="chart-container">
+            <canvas id="pie-chart"></canvas>
+            <canvas id="bar-chart"></canvas>
+        </div>
+    </section>
+    
+    <footer>
+        <p>© 2023 Инженерное машиностроение. Все права защищены.</p>
+        <ul>
+            <li><a href="#">Политика конфиденциальности</a></li>
+            <li><a href="#">Условия использования</a></li>
+            <li><a href="#">Связаться с нами</a></li>
+        </ul>
+    </footer>
+    
+    <script>
+        // Простой canvas пример с графиками (подключите библиотеки Chart.js)
+        const ctxPie = document.getElementById("pie-chart").getContext("2d");
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['Услуга 1', 'Услуга 2', 'Услуга 3'],
+                datasets: [{
+                    label: 'Услуги',
+                    data: [30, 40, 30],
+                    backgroundColor: ['#ffbdc4', '#ff9fad', '#ffdada']
+                }]
+            },
+            options: {}
+        });
+
+        const ctxBar = document.getElementById("bar-chart").getContext("2d");
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май'],
+                datasets: [
+                    {
+                        label: 'Объем производства',
+                        data: [100, 120, 130, 150, 160],
+                        backgroundColor: ['#ffbdc4']
+                    }
+                ]
+            },
+            options: {}
+        });
+    </script>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.card, section, .review-card').forEach(el => {
+    el.classList.add('fade-wait');
+    observer.observe(el);
+});
+</script>
+<style>
+.fade-wait { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+.fade-wait.visible { opacity: 1; transform: translateY(0); }
+.card, .review-card { transition: all 0.3s ease; }
+.card:hover, .review-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2); }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+</style>
+</body>
+</html>

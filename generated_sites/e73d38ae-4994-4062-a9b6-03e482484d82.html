@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Компания машиностроения - производство высокотехнологичного оборудования">
+    <title>Машинотроение | Инновации в производстве</title>
+    <style>
+        :root {
+            --primary-color: #2D3748;
+            --secondary-color: #A0B0C1;
+            --accent-color: #FF7F50;
+            --gradient-start: #2D3748;
+            --gradient-end: #1A202C;
+        }
+        
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        h1, h2, h3 {
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        p {
+            color: var(--secondary-color);
+            font-size: clamp(16px, 2vw, 20px);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        a:hover {
+            color: white;
+        }
+        
+        button {
+            background: var(--accent-color);
+            color: white;
+            padding: 1em 2em;
+            border: none;
+            border-radius: 40px;
+            font-size: inherit;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        nav li a {
+            color: white;
+        }
+        
+        /* HERO SECTION */
+        .hero-section {
+            min-height: calc(100vh - 4rem);
+            display: grid;
+            place-items: center;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: clamp(48px, 8vw, 80px);
+            margin-bottom: 1rem;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(24px, 4vw, 32px);
+            margin-bottom: 2rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        /* SERVICES SECTION */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            backface-visibility: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .service-card img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card h3 {
+            font-size: clamp(24px, 4vw, 32px);
+            margin-bottom: 1rem;
+        }
+        
+        .service-card p {
+            opacity: 0.8;
+        }
+        
+        .service-card:hover {
+            transform: scale(1.05);
+        }
+        
+        /* STATISTICS SECTION */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .stat-number {
+            font-size: clamp(48px, 8vw, 80px);
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .stat-label {
+            font-size: clamp(16px, 2vw, 20px);
+            opacity: 0.8;
+        }
+        
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+        
+        /* FOOTER */
+        footer {
+            background: var(--gradient-start);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        footer p {
+            margin-top: 1rem;
+        }
+        
+        /* RESPONSIVE DESIGN */
+        @media screen and (max-width: 768px) {
+            .services-grid,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+        }
+        
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        @keyframes bounce {
+            0%,100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <h1>Машинотроение</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#services">Наши услуги</a></li>
+                <li><a href="#statistics">Статистика</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Инновационные решения<br>в машиностроении</h1>
+            <p class="hero-subtitle">Высококачественное оборудование для промышленных предприятий</p>
+            <div class="hero-buttons">
+                <button>Ознакомиться подробнее</button>
+                <button>Получить консультацию</button>
+            </div>
+            <div class="scroll-indicator">↓</div>
+        </div>
+    </section>
+    
+    <!-- ABOUT US SECTION -->
+    <section id="about">
+        <div class="container">
+            <h2>О нашей компании</h2>
+            <p>Мы занимаемся производством и поставкой промышленного оборудования более 20 лет. Наша команда инженеров разрабатывает инновационные технологии, которые помогают предприятиям повысить производительность и снизить затраты.</p>
+            <p>Наш подход основан на тщательном анализе потребностей клиентов и разработке решений, оптимально соответствующих их задачам. Мы гарантируем высокое качество продукции и оперативную техническую поддержку.</p>
+        </div>
+    </section>
+    
+    <!-- SERVICES SECTION -->
+    <section id="services">
+        <div class="container">
+            <h2>Наши услуги</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="#" alt="Service Image" />
+                    <h3>Проектирование оборудования</h3>
+                    <p>Разработка уникальных проектов машин и механизмов с учетом специфических требований заказчика.</p>
+                </div>
+                <div class="service-card">
+                    <img src="#" alt="Service Image" />
+                    <h3>Изготовление деталей</h3>
+                    <p>Производство высокопрочных компонентов для различных отраслей промышленности, включая металлообработку и энергетику.</p>
+                </div>
+                <div class="service-card">
+                    <img src="#" alt="Service Image" />
+                    <h3>Обслуживание техники</h3>
+                    <p>Комплексное обслуживание производственного оборудования, включая диагностику, ремонт и модернизацию.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- STATISTICS SECTION -->
+    <section id="statistics">
+        <div class="container">
+            <h2>Наша статистика</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">+1000</div>
+                    <div class="stat-label">Клиентов по всему миру</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$50M</div>
+                    <div class="stat-label">Годовой оборот</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Удовлетворенность заказчиков</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+        <div class="container">
+            <h2>Свяжитесь с нами</h2>
+            <form action="/submit" method="post">
+                <input type="text" placeholder="Ваше имя" required/>
+                <input type="email" placeholder="Ваш e-mail" required/>
+                <textarea rows="4" cols="50" placeholder="Сообщение"></textarea>
+                <button type="submit">Отправить сообщение</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <h3>Машинотроение</h3>
+            <p>&copy; 2023 Машинотроение. Все права защищены.</p>
+        </div>
+    </footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.card, section, .review-card').forEach(el => {
+    el.classList.add('fade-wait');
+    observer.observe(el);
+});
+</script>
+<style>
+.fade-wait { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+.fade-wait.visible { opacity: 1; transform: translateY(0); }
+.card, .review-card { transition: all 0.3s ease; }
+.card:hover, .review-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2); }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+</style>
+</body>
+</html>

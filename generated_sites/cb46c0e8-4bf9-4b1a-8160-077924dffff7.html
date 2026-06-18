@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Светлая кофейня в скандинавском стиле — уют, комфорт и аромат кофе.">
+    <meta name="theme-color" content="#f9fafb">
+    <title>Скандинавская кофейня</title>
+    <style>
+        /* Общие настройки */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f9fafb, #ffffff, #f5f5f5);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 0 16px;
+            background-color: #EAE7DC;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            font-size: clamp(48px, 8vw, 80px);
+            font-weight: bold;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: normal;
+            margin-top: 48px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            max-width: 60ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        button {
+            padding: 14px 32px;
+            border-radius: 40px;
+            background: linear-gradient(135deg, #ffddcf, #ffe4d4);
+            color: #1e293b;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+            z-index: 10;
+            display: inline-block;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 128px 0;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 24px;
+            padding: 48px 0;
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: white;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, rgba(255,221,207,0.5), rgba(255,228,212,0.5));
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .icon {
+            font-size: 56px;
+            color: #ffccbc;
+            margin-bottom: 16px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%,100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Навигация */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.8);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 8px 16px;
+            transition: color 0.2s;
+        }
+
+        .nav-item:hover {
+            color: #ffccbc;
+        }
+
+        /* Бургер-меню */
+        .burger-menu {
+            display: none;
+            cursor: pointer;
+        }
+
+        .burger-menu div {
+            width: 30px;
+            height: 3px;
+            background: currentColor;
+            margin: 5px auto;
+            transition: all 0.3s;
+        }
+
+        @media screen and (max-width: 768px) {
+            nav {
+                justify-content: flex-start;
+            }
+
+            .nav-list {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 16px;
+                box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            }
+
+            .nav-item {
+                margin-bottom: 12px;
+            }
+
+            .burger-menu {
+                display: block;
+            }
+
+            .open .line:nth-child(1) {
+                transform: rotate(-45deg) translate(-4px, 4px);
+            }
+
+            .open .line:nth-child(2) {
+                opacity: 0;
+            }
+
+            .open .line:nth-child(3) {
+                transform: rotate(45deg) translate(4px, -4px);
+            }
+
+            .open .nav-list {
+                display: flex;
+            }
+        }
+
+        /* Интерьер и блюда */
+        .interior-breakfast {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 48px 0;
+        }
+
+        .interior-breakfast img {
+            width: 100%;
+            border-radius: 16px;
+            filter: grayscale(1);
+            transition: all 0.4s;
+        }
+
+        .interior-breakfast img:hover {
+            filter: grayscale(0);
+        }
+
+        /* Отзывы клиентов */
+        .reviews {
+            padding: 48px 0;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .cta-section {
+            background: #ffddcf;
+            padding: 48px 0;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .cta-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        .email-form input[type="text"] {
+            padding: 12px 16px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            margin-right: 16px;
+        }
+
+        .email-form button {
+            padding: 12px 24px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ffccbc, #ffddcf);
+            color: #1e293b;
+            border: none;
+            cursor: pointer;
+        }
+
+        footer {
+            background: #f9fafb;
+            padding: 24px 0;
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        footer a {
+            color: #1e293b;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        footer a:hover {
+            color: #ffccbc;
+        }
+
+        /* Анимации */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .animated {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInDown 0.8s forwards;
+        }
+
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Навигация -->
+<header>
+    <nav>
+        <a href="#" class="logo">Skandinavian Coffee</a>
+        <ul class="nav-list">
+            <li><a href="#about" class="nav-item">О нас</a></li>
+            <li><a href="#menu" class="nav-item">Меню</a></li>
+            <li><a href="#reviews" class="nav-item">Отзывы</a></li>
+            <li><a href="#contact" class="nav-item">Контакты</a></li>
+        </ul>
+        <div class="burger-menu">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero секция -->
+<div id="hero" class="hero-section animated">
+    <h1>Добро пожаловать в Skandinavian Coffee!</!</h1>
+    <p>Мы создаем атмосферу уюта и комфорта, где каждый глоток кофе наполнен теплом и заботой.</p>
+    <div style="display: flex; gap: 16px; justify-content:center;">
+        <button>Посетить нас</button>
+        <button>Заказать доставку</button>
+    </div>
+    <div class="scroll-indicator">↓</div>
+</div>
+
+<!-- О нас -->
+<div id="about" class="animated">
+    <h2>О нас</h2>
+    <div class="card-grid">
+        <!-- Карточки о нас -->
+        <div class="card">
+            <span class="icon">☕</span>
+            <h3>Свежесваренный кофе</h3>
+            <p>Наши бариста ежедневно готовят ароматный кофе из лучших зерен.</p>
+        </div>
+        <div class="card">
+            <span class="icon">🍪</span>
+            <h3>Домашняя выпечка</h3>
+            <p>Свежеиспечённые булочки и пирожные порадуют вас своим вкусом.</p>
+        </div>
+        <div class="card">
+            <span class="icon">🏠</span>
+            <h3>Уютная атмосфера</h3>
+            <p>Наш интерьер вдохновлен скандинавским стилем, создавая ощущение домашнего тепла.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Интерьер и блюда -->
+<div id="menu" class="interior-breakfast animated">
+    <h2>Интерьер и блюда</h2>
+    <p style="margin-left:auto; margin-right:auto;">В нашем заведении вы найдете уютную обстановку, созданную специально для того, чтобы вы могли насладиться каждым моментом. Приятная музыка, мягкий свет и удобные кресла позволят вам расслабиться после тяжелого дня или провести время за чашкой вкусного кофе и свежей выпечкой. Наша кухня предлагает разнообразные блюда от легких закусок до сытных завтраков и обедов. Мы используем только свежие продукты и готовим с любовью, чтобы каждое блюдо радовало вас своим вкусом и ароматом. Приходите к нам и почувствуйте себя как дома!</</p>
+</div>
+
+<!-- Отзывы клиентов -->
+<div id="reviews" class="reviews animated">
+    <h2>Отзывы наших гостей</h2>
+    <div class="grid-container">
+        <div class="review-card">
+            <img src="https://randomuser.me/api/portraits/women/49.jpg" style="width:64px; height:64px; border-radius:50%; object-fit:cover;">
+            <div>
+                <strong>Иван Иванов</strong>
+                <p>&#9733;&#9733;&#9733;&#9733;&#9734;</p>
+                <p>"Отличная атмосфера и вкусный кофе!" recommendatemj vsem posest eto mesto.</p>
+            </div>
+        </div>
+        <div class="review-card">
+            <img src="https://randomuser.me/api/portraits/men/1.jpg" style="width:64px; height:64px; border-radius:50%; object-fit:cover;">
+            <div>
+                <strong>Анна Петрова</strong>
+                <p>&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+                <p>"Pretcheskaya vypechka i druzhelyubnyj personal. obzatelo vernus snova!"</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Призыв к действию -->
+<div id="contact" class="cta-section animated">
+    <h2 class="cta-text">Prisoedinites k nashey semje lyubitelyey kofe!</h2>
+    <form class="email-form">
+        <input type="text" placeholder="Vash e-mail">
+        <button>Podpisatsya na novosti</button>
+    </form>
+</div>
+
+<!-- Футер -->
+<footer class="animated">
+    <p>&copy; 2023 Skandinavian Coffee</p>
+    <div>
+        <a href="#">Politika konfidencialnosti</a>
+        <a href="#">Usloviya ispolzovaniya</a>
+    </div>
+    <div>
+        <a href="https://www.facebook.com/" target="_blank"><i>Facebook</i></a>
+        <a href="https://www.instagram.com/" target="_blank"><i>Instagram</i></a>
+    </div>
+</footer>
+
+<script>
+    const burger = document.querySelector('.burger-menu');
+    const navList = document.querySelector('.nav-list');
+    
+    burger.addEventListener('click', () => {
+        navList.classList.toggle('open');
+        burger.classList.toggle('open');
+    });
+</script>
+
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.card, section, .review-card').forEach(el => {
+    el.classList.add('fade-wait');
+    observer.observe(el);
+});
+</script>
+<style>
+.fade-wait { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+.fade-wait.visible { opacity: 1; transform: translateY(0); }
+.card, .review-card { transition: all 0.3s ease; }
+.card:hover, .review-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2); }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+</style>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Контроль закупок</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 0;
+        }
+        
+        nav li {
+            margin-right: 20px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: inherit;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        
+        nav a.active {
+            border-color: #007bff;
+        }
+        
+        section {
+            display: none;
+        }
+        
+        section.active {
+            display: block;
+        }
+        
+        /* Стили карточек */
+        .card {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .fa {
+            font-size: 2em;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .change-up {
+            color: green;
+        }
+        
+        .change-down {
+            color: red;
+        }
+        
+        /* Графики стилей */
+        canvas {
+            max-width: 100%;
+        }
+        
+        @keyframes fadeInDown {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        .fade-in-down {
+            animation: fadeInDown 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Навигация -->
+        <nav>
+            <ul>
+                <li><a href="#" data-target="#home">Главная</a></li>
+                <li><a href="#" data-target="#stats">Статистика</a></li>
+                <li><a href="#" data-target="#orders">Закупки</a></li>
+                <li><a href="#" data-target="#inventory">Инвентарь</a></li>
+            </ul>
+        </nav>
+        
+        <!-- Секции сайта -->
+        <section id="home" class="active">
+            <h1>Добро пожаловать в систему контроля закупок!</h1>
+            <p>Здесь вы можете отслеживать закупки оборудования, анализировать статистику и управлять инвентарём.</p>
+        </section>
+        
+        <section id="stats">
+            <h2>Статистика закупок</h2>
+            
+            <!-- Карточки статистики -->
+            <div class="cards-container">
+                <div class="card">
+                    <i class="fa fa-dollar"></i>
+                    <span class="stat-value">$50,000</span>
+                    <p>Общая стоимость закупок</p>
+                    <small class="change-up">+5% по сравнению с прошлым месяцем</small>
+                </div>
+                
+                <div class="card">
+                    <i class="fa fa-cubes"></i>
+                    <span class="stat-value">150</span>
+                    <p>Количество единиц оборудования</p>
+                    <small class="change-down">-2% по сравнению с предыдущим кварталом</small>
+                </div>
+            </div>
+            
+            <!-- График закупок -->
+            <canvas id="lineChart" height="150"></canvas>
+        </section>
+        
+        <section id="orders">
+            <h2>Список закупок</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Оборудование</th>
+                        <th>Стоимость ($)</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2023-09-01</td>
+                        <td>Сервер HP ProLiant</td>
+                        <td>$12,000</td>
+                        <td>Доставлено</td>
+                    </tr>
+                    <!-- Дополнительные строки здесь -->
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="inventory">
+            <h2>Инвентарный список</h2>
+            <input type="text" placeholder="Поиск..." id="searchInput">
+            <select name="category">
+                <option value="">Все категории</option>
+                <option value="серверы">Сервера</option>
+                <option value="рабочие станции">Рабочие станции</option>
+            </select>
+            <br><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Наименование</th>
+                        <th>Категория</th>
+                        <th>Кол-во</th>
+                        <th>Место хранения</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>HP ProLiant DL380 Gen10</td>
+                        <td>Сервера</td>
+                        <td>3</td>
+                        <td>Склад №1</td>
+                    </tr>
+                    <!-- Дополнительные строки здесь -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+    
+    <!-- Подключение Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Активируем соответствующую секцию при клике на ссылку
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                let target = this.getAttribute('data-target');
+                document.querySelector('.active').classList.remove('active');
+                document.querySelector(target).classList.add('active');
+                this.parentElement.querySelector('.active').classList.remove('active');
+                this.classList.add('active');
+            });
+        });
+        
+        // Пример графика с использованием Chart.js
+        const ctx = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Январь', 'Февраль', 'Март', 'Апрель'],
+                datasets: [{
+                    label: 'Закупки по месяцам',
+                    data: [12000, 15000, 18000, 20000],
+                    fill: false,
+                    borderColor: '#007bff',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.card, section, .review-card').forEach(el => {
+    el.classList.add('fade-wait');
+    observer.observe(el);
+});
+</script>
+<style>
+.fade-wait { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+.fade-wait.visible { opacity: 1; transform: translateY(0); }
+.card, .review-card { transition: all 0.3s ease; }
+.card:hover, .review-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2); }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+</style>
+</body>
+</html>
