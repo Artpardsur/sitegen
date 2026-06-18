@@ -1,6 +1,5 @@
 ## 📁 README.md для SiteGen
 
-```markdown
 # 🎨 SiteGen — Генератор дизайна сайтов на GigaChat
 
 Сервис, который по текстовому описанию создаёт готовую веб-страницу с помощью GigaChat API. Результат можно экспортировать в React-приложение.
@@ -195,4 +194,4 @@ MIT
 - **Telegram:** @abcdefg445454
 - **Email:** artemlidzhiev.4444@gmail.com
 - **GitHub:** Artpardsur
-```
+
